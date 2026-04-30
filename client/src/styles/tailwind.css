@@ -1,0 +1,6 @@
+/* Import pixel-specific styles — must precede @tailwind */
+@import './pixel.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

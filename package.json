@@ -1,0 +1,18 @@
+{
+  "name": "pixel-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -n client,server -c cyan,magenta \"npm run dev -w client\" \"npm run dev -w server\"",
+    "build": "npm run build -w client",
+    "seed": "npm run seed -w server",
+    "preview": "npm run preview -w client"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

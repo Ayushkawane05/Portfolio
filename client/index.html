@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ayush Kawane — Software Developer, AI/ML Enthusiast. Performance-optimized pixel-art portfolio." />
+  <meta name="theme-color" content="#0a0a0f" />
+
+  <title>Ayush Kawane | Portfolio</title>
+
+  <!-- Resource Hints (order matters: dns-prefetch → preconnect → preload) -->
+  <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+  <link rel="preconnect" href="https://res.cloudinary.com" crossorigin />
+
+  <!-- Preload pixel font (critical for above-the-fold) -->
+  <link rel="preload" href="/fonts/press-start-2p.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Critical CSS — inlined for zero render-blocking -->
+  <style>
+    /* Font face with swap to prevent FOIT */
+    @font-face {
+      font-family: 'Press Start 2P';
+      src: url('/fonts/press-start-2p.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* Critical reset + hero layout */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #0a0a0f;
+      color: #e2e8f0;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Hero critical layout — visible before JS loads */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-name {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.2rem, 4vw, 2.5rem);
+      color: #00d4ff;
+      text-align: center;
+      line-height: 1.6;
+      animation: pixel-flicker 3s ease-in-out infinite;
+    }
+    .hero-tagline {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+      color: #64748b;
+      text-align: center;
+      margin-top: 1.5rem;
+      line-height: 2;
+    }
+
+    /* Pixel flicker animation */
+    @keyframes pixel-flicker {
+      0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(0, 212, 255, 0.6); }
+      50% { opacity: 0.85; text-shadow: 0 0 4px rgba(0, 212, 255, 0.3); }
+      75% { opacity: 0.95; text-shadow: 0 0 12px rgba(0, 212, 255, 0.8); }
+    }
+
+    /* Parallax layers — CSS only */
+    .parallax-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+    .parallax-layer {
+      position: absolute;
+      inset: 0;
+      background-repeat: repeat;
+      image-rendering: pixelated;
+    }
+    .parallax-layer--stars {
+      background: radial-gradient(1px 1px at 20px 30px, #ffffff22, transparent),
+                  radial-gradient(1px 1px at 40px 70px, #ffffff18, transparent),
+                  radial-gradient(1px 1px at 80px 20px, #ffffff15, transparent),
+                  radial-gradient(1px 1px at 130px 80px, #ffffff20, transparent),
+                  radial-gradient(1px 1px at 160px 50px, #ffffff12, transparent);
+      background-size: 200px 100px;
+    }
+    .parallax-layer--grid {
+      background-image: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                         linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .parallax-layer--vignette {
+      background: radial-gradient(ellipse at center, transparent 40%, #0a0a0f 100%);
+    }
+
+    /* CRT Screen Effect */
+    body::after {
+      content: " ";
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                  linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+      z-index: 9999;
+      background-size: 100% 3px, 3px 100%;
+      pointer-events: none;
+      animation: crt-flicker 0.15s infinite;
+    }
+
+    @keyframes crt-flicker {
+      0% { opacity: 0.98; }
+      50% { opacity: 1; }
+      100% { opacity: 0.99; }
+    }
+
+    /* Scanline moving effect */
+    .scanline {
+      width: 100%;
+      height: 100px;
+      z-index: 9998;
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(0, 0, 0, 0) 100%);
+      opacity: 0.1;
+      position: fixed;
+      bottom: 100%;
+      pointer-events: none;
+      animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+      0% { bottom: 100%; }
+      80% { bottom: 100%; }
+      100% { bottom: -100px; }
+    }
+
+    /* Moving Planes background */
+    .plane {
+      position: absolute;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 8px;
+      color: rgba(0, 212, 255, 0.2);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 0;
+      image-rendering: pixelated;
+    }
+    .plane-1 { top: 15%; animation: fly-right 25s linear infinite; }
+    .plane-2 { top: 45%; animation: fly-left 35s linear infinite; animation-delay: -5s; }
+    .plane-3 { top: 75%; animation: fly-right 45s linear infinite; animation-delay: -15s; }
+
+    @keyframes fly-right {
+      from { left: -100px; opacity: 0; }
+      10% { opacity: 0.5; }
+      90% { opacity: 0.5; }
+      to { left: 100%; opacity: 0; }
+    }
+    @keyframes fly-left {
+      from { right: -100px; opacity: 0; }
+      10% { opacity: 0.5; }
+      90% { opacity: 0.5; }
+      to { right: 100%; opacity: 0; }
+    }
+
+    /* Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+  </style>
+
+  <!-- Non-critical CSS is bundled by Vite into hashed assets automatically -->
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  <div class="scanline"></div>
+  <!-- Static hero content — visible before React hydrates -->
+  <div id="root">
+    <main>
+      <section class="hero-section" id="hero">
+        <div class="parallax-bg" aria-hidden="true">
+          <div class="parallax-layer parallax-layer--stars"></div>
+          <div class="parallax-layer parallax-layer--grid"></div>
+          <div class="parallax-layer parallax-layer--vignette"></div>
+          <div class="plane plane-1">✈︎ AIR_TRAFFIC_01</div>
+          <div class="plane plane-2">✈︎ AIR_TRAFFIC_02</div>
+          <div class="plane plane-3">✈︎ AIR_TRAFFIC_03</div>
+        </div>
+        <div class="hero-content">
+          <h1 class="hero-name">Ayush Kawane</h1>
+          <p class="hero-tagline">Software Developer • AI/ML Enthusiast</p>
+          <div class="mt-12 flex flex-col items-center gap-2 animate-fade-in" style="animation-delay:0.5s;animation-fill-mode:both">
+            <span class="text-pixel-muted font-pixel text-[0.5rem] tracking-widest uppercase">Scroll Down</span>
+            <div class="w-px h-8 bg-gradient-to-b from-pixel-primary/50 to-transparent"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <canvas id="pixel-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;opacity:0.2;"></canvas>
+  <script>
+    const canvas = document.getElementById('pixel-canvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, columns;
+    const fontSize = 10;
+    const drops = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      columns = Math.floor(width / fontSize);
+      for (let i = 0; i < columns; i++) {
+        if (!drops[i]) drops[i] = Math.random() * -100;
+      }
+    }
+
+    function draw() {
+      ctx.fillStyle = 'rgba(10, 10, 15, 0.1)';
+      ctx.fillRect(0, 0, width, height);
+      ctx.fillStyle = '#00d4ff';
+      ctx.font = fontSize + 'px monospace';
+      
+      for (let i = 0; i < drops.length; i++) {
+        const text = Math.random() > 0.5 ? '1' : '0';
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    setInterval(draw, 33);
+
+    // Scroll Reveal Logic
+    const observerOptions = { threshold: 0.1 };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('section, footer, .pixel-border').forEach(el => {
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+  </script>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>

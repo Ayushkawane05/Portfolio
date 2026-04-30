@@ -1,0 +1,46 @@
+/* ============================================
+   Critical CSS — above-the-fold styles
+   These are ALSO inlined in index.html <style> tag.
+   This file exists as a reference/source of truth.
+   ============================================ */
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: url('/fonts/press-start-2p.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  color: #00d4ff;
+  text-align: center;
+  line-height: 1.6;
+  animation: pixel-flicker 3s ease-in-out infinite;
+}
+
+.hero-tagline {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.5rem, 1.5vw, 0.75rem);
+  color: #64748b;
+  text-align: center;
+  margin-top: 1.5rem;
+  line-height: 2;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+}
