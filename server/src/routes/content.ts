@@ -5,6 +5,7 @@ import Experience from '../models/Experience.js';
 import Achievement from '../models/Achievement.js';
 import Project from '../models/Project.js';
 import Skill from '../models/Skill.js';
+import Visit from '../models/Visit.js';
 
 const router = Router();
 
